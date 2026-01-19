@@ -1,0 +1,60 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-product" title="Products">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                            <use xlink:href="/_slds/icons/standard-sprite/svg/symbols.svg#product"></use>
+                        </svg>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title slds-truncate" title="Product Catalog">
+                        Product Catalog
+                    </h2>
+                </div>
+            </header>
+        </div>
+
+        <div class="slds-card__body slds-card__body_inner">
+            <template if:true={loading}>
+                <lightning-spinner alternative-text="Loading Products" size="small"></lightning-spinner>
+            </template>
+
+            <template if:true={error}>
+                <div role="alert" class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error slds-m-bottom_small">
+                    <span class="slds-assistive-text">Error</span>
+                    <span>{error}</span>
+                </div>
+            </template>
+
+            <template if:true={hasProducts}>
+                <ul class="slds-has-dividers_around-space">
+                    <template for:each={products} for:item="p">
+                        <li key={p.id} class="slds-item slds-p-vertical_small slds-grid slds-wrap slds-gutters_small">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-5">
+                                <span class="slds-text-title_bold">{p.name}</span>
+                                <template if:true={p.code}>
+                                    <span class="slds-text-color_weak slds-m-left_x-small">({p.code})</span>
+                                </template>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-medium-size_2-of-5">
+                                <span class="slds-text-body_small">Family: {p.family}</span>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-5 slds-text-align_right">
+                                <lightning-badge label={p.isActive} class="slds-theme_success"></lightning-badge>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+
+            <template if:false={hasProducts}>
+                <template if:false={loading}>
+                    <div class="slds-text-color_weak">No products found.</div>
+                </template>
+            </template>
+        </div>
+    </article>
+</template>
